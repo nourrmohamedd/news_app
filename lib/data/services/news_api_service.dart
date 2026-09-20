@@ -33,7 +33,21 @@ class NewsApiService {
     required String sourceId,
     required int page,
   }) async {
-    final json = await _get(ApiConstants.topHeadlinesPath, {
+    final all = await _fetchBySource(
+      ApiConstants.everythingPath,
+      sourceId,
+      page,
+    );
+    if (all.totalResults > 0 || page > 1) return all;
+    return _fetchBySource(ApiConstants.topHeadlinesPath, sourceId, page);
+  }
+
+  Future<ArticlesPage> _fetchBySource(
+    String path,
+    String sourceId,
+    int page,
+  ) async {
+    final json = await _get(path, {
       ApiConstants.qSources: sourceId,
       ApiConstants.qPage: '$page',
       ApiConstants.qPageSize: '${ApiConstants.pageSize}',

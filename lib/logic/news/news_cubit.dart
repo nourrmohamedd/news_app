@@ -47,6 +47,7 @@ class NewsCubit extends Cubit<NewsState> {
     try {
       final result = await _repository.getArticles(sourceId: sourceId, page: 1);
       if (id != _requestId) return;
+      //debugPrint('source=$sourceId totalResults=${result.totalResults}');
       emit(
         state.copyWith(
           status: NewsStatus.success,
